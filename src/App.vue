@@ -2,10 +2,7 @@
   <div id="app">
     <header class="site-header">
       <h1 class="site-logo">Roomsy</h1>
-      <nav class="site-nav">
-        <nav-link to="/login">Login</nav-link>
-        <nav-link to="/register">Register</nav-link>
-      </nav>
+      <Navbar />
     </header>
 
     <main class="site-main">
@@ -17,6 +14,8 @@
 </template>
 
 <script lang="ts" setup>
+import Navbar from './components/Navbar.vue'
+
 const currentYear = new Date().getFullYear()
 </script>
 
