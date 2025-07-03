@@ -16,22 +16,34 @@
 
     <!-- Search Bar -->
     <form class="search-bar max-container" @submit.prevent="performSearch">
+      <!-- Date Range Picker -->
       <div class="search-left">
         <label for="date">Date Range</label>
-        <input
-          type="text"
-          id="date"
-          v-model="search.dateRange"
-          placeholder="Check-in - Check-out"
-        />
+        <div class="input-icon-wrapper">
+          <CalendarIcon class="icon" />
+          <Datepicker
+            v-model="search.dateRange"
+            format="yyyy-MM-dd"
+            range
+            :auto-apply="true"
+            placeholder="Select check-in & check-out"
+          />
+        </div>
       </div>
+
+      <!-- Guest Count -->
       <div class="search-right">
         <label for="guests">Guests</label>
-        <select id="guests" v-model="search.guests">
-          <option disabled value="">Select guests</option>
-          <option v-for="n in 10" :key="n" :value="n">{{ n }} Guest{{ n > 1 ? 's' : '' }}</option>
-        </select>
+        <div class="input-icon-wrapper">
+          <UsersIcon class="icon" />
+          <select id="guests" v-model="search.guests">
+            <option disabled value="">Select guests</option>
+            <option v-for="n in 10" :key="n" :value="n">{{ n }} Guest{{ n > 1 ? 's' : '' }}</option>
+          </select>
+        </div>
       </div>
+
+      <!-- Submit -->
       <div class="search-submit">
         <button type="submit">Search</button>
       </div>
@@ -59,19 +71,20 @@
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
+import Datepicker from '@vuepic/vue-datepicker'
+import '@vuepic/vue-datepicker/dist/main.css'
+import { CalendarIcon, UsersIcon } from 'lucide-vue-next'
 // import RoomSummaryCard from '@/components/RoomSummaryCard.vue'
 
 defineOptions({
   name: 'SearchPage',
 })
 
-// Search form data
 const search = ref({
   dateRange: '',
   guests: '',
 })
 
-// Dummy result data (replace with API call)
 const allRooms = ref([
   { id: 1, name: 'Luxury Suite', price: 200 },
   { id: 2, name: 'Cozy Double', price: 150 },
@@ -89,12 +102,9 @@ const results = computed(() => {
 
 function performSearch() {
   console.log('Searching with:', search.value)
-  // You could filter results here based on search inputs
 }
 
-function sortResults() {
-  // Trigger recomputed results
-}
+function sortResults() {}
 </script>
 
 <style scoped>
@@ -163,7 +173,32 @@ function sortResults() {
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 6px;
-  background: var(--color-highlight);
+}
+
+.input-icon-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  color: var(--color-text);
+  position: absolute;
+  left: 0.75rem;
+  pointer-events: none;
+}
+
+.date-input,
+.input-icon-wrapper select {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  font-size: 1rem;
+}
+
+.input-icon-wrapper select:focus {
+  outline: none;
 }
 
 .search-submit {
