@@ -245,7 +245,6 @@ function sortResults() {}
 .sort-options select {
   padding: 0.4rem 0.75rem;
   border-radius: 6px;
-  background: var(--color-highlight);
   border: 1px solid #ccc;
 }
 
