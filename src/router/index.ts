@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import LoginFPage from '@/views/Login.vue'
 import RegisterPage from '@/views/Register.vue'
 import SearchPage from '@/views/Search.vue'
+import BookingContactPage from '@/views/BookingContact.vue'
+import BookingConfirmationPage from '@/views/BookingConfirmation.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,6 +22,16 @@ const router = createRouter({
       path: '/search',
       name: 'search',
       component: SearchPage,
+    },
+    {
+      path: '/booking/contact/:slug',
+      name: 'bookingContacts',
+      component: BookingContactPage,
+    },
+    {
+      path: '/booking/confirmation',
+      name: 'BookingConfirmation',
+      component: BookingConfirmationPage,
     },
     // {
     //   path: '/about',

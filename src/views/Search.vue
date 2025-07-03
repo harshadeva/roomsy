@@ -22,9 +22,11 @@
         <div class="input-icon-wrapper">
           <CalendarIcon class="icon" />
           <Datepicker
+            ref="dateRef"
             v-model="search.dateRange"
             format="yyyy-MM-dd"
             range
+            :enable-time-picker="false"
             :auto-apply="true"
             placeholder="Select check-in & check-out"
           />
@@ -62,9 +64,8 @@
     </div>
 
     <!-- Search Results -->
-    <div class="results-grid">
-      <h1 v-for="room in results" :key="room.id">Room Here : {{ room.name }}</h1>
-      <!-- <RoomSummaryCard v-for="room in results" :key="room.id" :room="room" /> -->
+    <div class="results-grid max-container">
+      <RoomSummaryCard v-for="room in results" :key="room.id" :room="room" @bookRoom="bookRoom" />
     </div>
   </section>
 </template>
@@ -74,23 +75,26 @@ import { ref, computed } from 'vue'
 import Datepicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import { CalendarIcon, UsersIcon } from 'lucide-vue-next'
-// import RoomSummaryCard from '@/components/RoomSummaryCard.vue'
+import RoomSummaryCard from '@/components/RoomSummary.vue'
+import { allRooms } from '../composables/rooms'
+import { useBookingStore } from '@/stores/booking'
+import { nextTick } from 'vue'
+import { useRouter } from 'vue-router'
 
 defineOptions({
   name: 'SearchPage',
 })
 
-const search = ref({
-  dateRange: '',
-  guests: '',
-})
+const bookingStore = useBookingStore()
+const userRouter = useRouter()
 
-const allRooms = ref([
-  { id: 1, name: 'Luxury Suite', price: 200 },
-  { id: 2, name: 'Cozy Double', price: 150 },
-  { id: 3, name: 'Family Room', price: 180 },
-  { id: 4, name: 'Budget Single', price: 100 },
-])
+const search = ref<{
+  dateRange: [Date, Date] | null
+  guests: string
+}>({
+  dateRange: null,
+  guests: '1',
+})
 
 const sortOrder = ref<'asc' | 'desc'>('desc')
 
@@ -100,8 +104,78 @@ const results = computed(() => {
   })
 })
 
+const dateRef = ref(null)
+function isDatesValid() {
+  if (!search.value.dateRange) {
+    // If date range is empty, focus the datepicker input
+    nextTick(() => {
+      const input = dateRef.value?.$el?.querySelector('input')
+      if (input) {
+        input.focus()
+        input.click()
+      }
+    })
+    return false
+  }
+  return true
+}
+
+function bookRoom(room: {
+  id: number
+  image: string
+  title: string
+  slug: string
+  type: string
+  description: string
+  price: number
+}) {
+  if (!isDatesValid()) return
+  const dates = parseDateRange(search.value.dateRange)
+  console.log(dates)
+  bookingStore.setRoomSlug(room.slug)
+  bookingStore.setSearchFilters({
+    startDate: dates.startDate,
+    endDate: dates.endDate,
+    guests: search.value.guests,
+  })
+  userRouter.push({
+    name: 'bookingContacts',
+    params: { slug: room.slug },
+  })
+}
+
 function performSearch() {
-  console.log('Searching with:', search.value)
+  if (!isDatesValid()) return
+
+  const dates = parseDateRange(search.value.dateRange)
+  bookingStore.setSearchFilters({
+    startDate: dates.startDate,
+    endDate: dates.endDate,
+    guests: search.value.guests,
+  })
+}
+
+function parseDateRange(range: [Date, Date] | null): {
+  startDate: Date | null
+  endDate: Date | null
+  nights: number
+} {
+  console.log('Parsing date range:', range)
+
+  if (!range || range.length !== 2) {
+    return { startDate: null, endDate: null, nights: 0 }
+  }
+
+  const [startDate, endDate] = range
+
+  if (!(startDate instanceof Date) || !(endDate instanceof Date)) {
+    return { startDate: null, endDate: null, nights: 0 }
+  }
+
+  const diffTime = endDate.getTime() - startDate.getTime()
+  const nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+
+  return { startDate, endDate, nights }
 }
 
 function sortResults() {}
@@ -253,7 +327,5 @@ function sortResults() {}
   display: grid;
   grid-template-columns: 1fr;
   gap: 1rem;
-  width: 100%;
-  max-width: 1000px;
 }
 </style>

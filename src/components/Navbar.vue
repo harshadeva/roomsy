@@ -1,6 +1,6 @@
 <template>
   <nav class="site-nav max-container" aria-label="Main Navigation">
-    <h1 class="site-logo">Roomsy</h1>
+    <h1 class="site-logo"><router-link to="/search">Roomsy</router-link></h1>
     <div class="left">
       <ul class="nav-links" v-if="isAuthenticated">
         <li>
@@ -31,6 +31,10 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
 import { useAuth } from '@/composables/useAuth'
+
+defineOptions({
+  name: 'NavbarComponent',
+})
 
 const { user, logout, isAuthenticated } = useAuth()
 
