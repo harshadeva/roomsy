@@ -95,6 +95,10 @@ import { useRouter } from 'vue-router'
 import { useAuth } from '@/composables/useAuth'
 import { EyeIcon, EyeOffIcon } from 'lucide-vue-next'
 
+defineOptions({
+  name: 'RegisterPage',
+})
+
 const name = ref('')
 const email = ref('')
 const password = ref('')

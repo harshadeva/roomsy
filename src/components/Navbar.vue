@@ -1,20 +1,30 @@
 <template>
-  <nav class="site-nav" aria-label="Main Navigation">
-    <ul class="nav-links">
-      <li v-if="!isAuthenticated">
-        <router-link to="/login">Login</router-link>
-      </li>
-      <li v-if="!isAuthenticated">
-        <router-link to="/register">Register</router-link>
-      </li>
+  <nav class="site-nav max-container" aria-label="Main Navigation">
+    <h1 class="site-logo">Roomsy</h1>
+    <div class="left">
+      <ul class="nav-links" v-if="isAuthenticated">
+        <li>
+          <router-link to="/search">Search</router-link>
+        </li>
+      </ul>
+    </div>
+    <div class="right">
+      <ul class="nav-links">
+        <li v-if="!isAuthenticated">
+          <router-link to="/login">Login</router-link>
+        </li>
+        <li v-if="!isAuthenticated">
+          <router-link to="/register">Register</router-link>
+        </li>
 
-      <li v-if="isAuthenticated" class="user-info">
-        <span>Welcome, {{ user?.name }}</span>
-      </li>
-      <li v-if="isAuthenticated">
-        <button @click="logoutUser" class="logout-btn">Logout</button>
-      </li>
-    </ul>
+        <li v-if="isAuthenticated" class="user-info">
+          <span>Welcome, {{ user?.name }}</span>
+        </li>
+        <li v-if="isAuthenticated">
+          <button @click="logoutUser" class="logout-btn">Logout</button>
+        </li>
+      </ul>
+    </div>
   </nav>
 </template>
 
@@ -33,6 +43,19 @@ function logoutUser() {
 </script>
 
 <style scoped>
+.site-nav {
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.site-nav .left {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+}
+
 .nav-links {
   display: flex;
   gap: 1rem;

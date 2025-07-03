@@ -48,6 +48,10 @@ import { useRouter } from 'vue-router'
 import { useAuth } from '@/composables/useAuth'
 import { EyeIcon, EyeOffIcon } from 'lucide-vue-next'
 
+defineOptions({
+  name: 'LoginPage',
+})
+
 const email = ref('')
 const password = ref('')
 const emailError = ref('')

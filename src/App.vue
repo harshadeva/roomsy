@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <header class="site-header">
-      <h1 class="site-logo">Roomsy</h1>
       <Navbar />
     </header>
 
