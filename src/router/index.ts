@@ -41,6 +41,11 @@ const router = createRouter({
       name: 'BookingConfirmation',
       component: BookingConfirmationPage,
       meta: { requiresAuth: true }
+    },
+    {
+      // handling 404 routes. this will redirect to a new page in an actual site. this is just for the assessment
+      path: '/:pathMatch(.*)*',
+      redirect: '/search'
     }
   ],
 })
