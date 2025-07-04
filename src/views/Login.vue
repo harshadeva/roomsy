@@ -80,7 +80,7 @@ function handleLogin() {
   if (emailError.value || passwordError.value) return
 
   login('Test User', email.value, password.value)
-  router.push('/dashboard')
+  router.push('/search')
 }
 </script>
 

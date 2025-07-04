@@ -139,4 +139,31 @@ function redirectToRoomPage() {
 .book-button:hover {
   background-color: var(--color-primary);
 }
+
+@media (max-width: 768px) {
+  .room-card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .room-image {
+    width: 100%;
+    height: auto;
+  }
+
+  .room-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .room-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 0;
+  }
+}
 </style>

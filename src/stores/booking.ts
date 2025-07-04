@@ -1,3 +1,5 @@
+import { getRoom } from '@/composables/rooms'
+import type { Room } from '@/types/common'
 import { defineStore } from 'pinia'
 
 export const useBookingStore = defineStore('booking', {
@@ -36,6 +38,9 @@ export const useBookingStore = defineStore('booking', {
         year: 'numeric',
       }).toUpperCase()
     },
+    reservedRoom(state): Room | null {
+      return getRoom(state.roomSlug)
+    }
   },
 
   actions: {

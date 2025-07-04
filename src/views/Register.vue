@@ -162,7 +162,7 @@ function handleRegister() {
 
   register(name.value, email.value, password.value)
 
-  router.push('/dashboard')
+  router.push('/search')
 }
 </script>
 

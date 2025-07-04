@@ -1,6 +1,6 @@
-import { ref } from "vue";
+import type { Room } from "@/types/common";
 
-export const allRooms = ref([
+export const allRooms: Room[] = [
   {
     id: 1,
     image:
@@ -51,9 +51,9 @@ export const allRooms = ref([
     description: 'Spacious room with two queen beds and child-friendly facilities.',
     price: 21500,
   },
-])
+]
 
 
-export const getRoom = (slug: string) => {
-  return allRooms.value.find(room => room.slug === slug)
+export const getRoom = (slug: string): Room | null => {
+  return allRooms.find(room => room.slug === slug) || null
 }

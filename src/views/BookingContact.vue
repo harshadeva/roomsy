@@ -71,8 +71,8 @@ const roomSlug = route.params.slug as string
 const room = getRoom(roomSlug)
 const bookingStore = useBookingStore()
 
-if (!room) {
-  console.error(`Room not found for slug: ${roomSlug}`)
+if (!room || bookingStore.formattedStartDate == '') {
+  router.push({ name: 'search' })
 }
 
 const form = reactive({

@@ -99,7 +99,7 @@ const search = ref<{
 const sortOrder = ref<'asc' | 'desc'>('desc')
 
 const results = computed(() => {
-  return [...allRooms.value].sort((a, b) => {
+  return [...allRooms].sort((a, b) => {
     return sortOrder.value === 'asc' ? a.price - b.price : b.price - a.price
   })
 })
@@ -327,5 +327,32 @@ function sortResults() {}
   display: grid;
   grid-template-columns: 1fr;
   gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .search-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .results-header {
+    gap: 1rem;
+  }
+
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .results-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
 }
 </style>
