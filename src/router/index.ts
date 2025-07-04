@@ -16,36 +16,47 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: LoginFPage,
+      meta: { guestOnly: true },
     },
     {
       path: '/register',
       name: 'register',
       component: RegisterPage,
+      meta: { guestOnly: true },
     },
     {
       path: '/search',
       name: 'search',
       component: SearchPage,
+      meta: { requiresAuth: true }
     },
     {
       path: '/booking/contact/:slug',
       name: 'bookingContacts',
       component: BookingContactPage,
+      meta: { requiresAuth: true }
     },
     {
       path: '/booking/confirmation',
       name: 'BookingConfirmation',
       component: BookingConfirmationPage,
-    },
-    // {
-    //   path: '/about',
-    //   name: 'about',
-    //   // route level code-splitting
-    //   // this generates a separate chunk (About.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import('../views/AboutView.vue'),
-    // },
+      meta: { requiresAuth: true }
+    }
   ],
 })
 
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = !!localStorage.getItem('roomsy_user')
+
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    next({ name: 'login' })
+  }
+
+  else if (to.meta.guestOnly && isAuthenticated) {
+    next({ name: 'search' })
+  }
+  else {
+    next()
+  }
+})
 export default router
