@@ -80,6 +80,7 @@ import { allRooms } from '../composables/rooms'
 import { useBookingStore } from '@/stores/booking'
 import { nextTick } from 'vue'
 import { useRouter } from 'vue-router'
+import type { ComponentPublicInstance } from 'vue'
 
 defineOptions({
   name: 'SearchPage',
@@ -104,7 +105,8 @@ const results = computed(() => {
   })
 })
 
-const dateRef = ref(null)
+const dateRef = ref<ComponentPublicInstance | null>(null)
+
 function isDatesValid() {
   if (!search.value.dateRange) {
     // If date range is empty, focus the datepicker input
